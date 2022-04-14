@@ -4,4 +4,4 @@ from django.db import models
 User = get_user_model()
 
 class Category(models.Model):
-    slug = Models.SlugField(max_length=30, primary_key=True)
+    slug = Modelgos.SlugField(max_length=30, primary_key=True)
