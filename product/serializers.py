@@ -50,4 +50,3 @@ class ProductSerializer(serializers.ModelSerializer):
             representation['rating'] = rating_result / instance.rating.all().count()
         print(rating_result)
         return representation
-

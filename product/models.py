@@ -37,4 +37,3 @@ class Rating(models.Model):
         MinValueValidator(1),
         MaxValueValidator(5)
     ])
-
