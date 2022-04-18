@@ -10,15 +10,15 @@ class UserManager(BaseUserManager):
         if not email:
             raise ValueError("The given email must be set")
         email = self.normalize_email(email=email)
-        user = self.model(email=email, **kwargs)
+        user = self.model(email=email,password=password **kwargs)
         user.create_activation_code()
         user.set_password(password)
         user.save(using=self._db)
         return user
 
     def create_user(self, email, password, **kwargs):
-        kwargs.setdefault('is_staff', False) #  Определяет, может ли этот пользователь получить доступ к сайту администратора.
-        kwargs.setdefault('is_superuser', False) # логический. Обозначает, что у этого пользователя есть все разрешения без их явного назначения.
+        kwargs.setdefault('is_staff', False)
+        kwargs.setdefault('is_superuser', False)
         return self._create_user(email, password, **kwargs)
 
     def create_superuser(self, email, password, **kwargs):
@@ -33,18 +33,17 @@ class UserManager(BaseUserManager):
         return self._create_user(email, password, **kwargs)
 
 
-class CustomUser(AbstractUser):
+class MyUser(AbstractUser):
+    username = None
     email = models.EmailField('email address', unique=True)
     password = models.CharField(max_length=100)
-    activation_code = models.CharField(max_length=40, blank=True)
     objects = UserManager()
-    username = None
-    is_active = models.BooleanField(default=False) # логический. Указывает, следует ли считать эту учетную запись активной.
-
+    is_active = models.BooleanField(default=False)
+    activation_code = models.CharField(max_length=40, blank=True)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
-    def str(self):
+    def __str__(self):
         return self.email
 
     def create_activation_code(self):
