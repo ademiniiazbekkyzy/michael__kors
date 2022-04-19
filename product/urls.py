@@ -5,9 +5,8 @@ from product.views import *
 router = DefaultRouter()
 router.register = ('', ProductViewSet)
 
-from product.views import *
-urlpatterrns = [
+urlpatterns = [
     path('category/', CategoryListCreateView.as_view()),
-    path('category/<str:slug>', CategoryRetriveDeleteUpdateView.as_view()),
+    path('category/<str:slug>', CategoryRetrieveDeleteUpdateView.as_view()),
     path('', include(router.urls))
 ]
