@@ -1,17 +1,27 @@
-# Create your views here.
+from django.contrib.auth import get_user_model
+from django.shortcuts import get_object_or_404
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from .serializers import *
 
 
-# class RegisterApiView(APIView):
-#     def post(self, request):
-#         serializer = RegisterSerializer(data=request.data)
-#         if serializer.is_valid(raise_exception=True):
-#             serializer.save()
-#             message = 'You have successfully registered. An activation email has been sent to you.'
-#             return Response(message, status=201)
-#         return Response(status=status.HTTP_400_BAD_REQUEST)
+class RegisterView(APIView):
+    def post(self, request):
+        data = request.data
+        serializer = RegisterSerializer(data=data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            message = 'You have successfully registered. An activation email has been sent to you.'
+            return Response(message, status=status.HTTP_201_CREATED)
 
-class RegisterView(CreateView):
-    model = User
-    form_class = RegistrationForm
-    success_url = reverse_lazy('home')
+
+class ActivateView(APIView):
+    def get(self, request, activation_code):
+        User = get_user_model()
+        user = get_object_or_404(User, activation_code=activation_code)
+        user.is_active = True
+        user.activation_code = ''
+        user.save()
+        return Response('Your account successfully activated!', status=status.HTTP_200_OK)
 

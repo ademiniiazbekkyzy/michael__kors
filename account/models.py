@@ -6,11 +6,13 @@ from django.db import models
 
 
 class UserManager(BaseUserManager):
+    use_in_migrations = True
+
     def _create_user(self, email, password, **kwargs):
         if not email:
             raise ValueError("The given email must be set")
         email = self.normalize_email(email=email)
-        user = self.model(email=email,password=password **kwargs)
+        user = self.model(email=email, password=password, **kwargs)
         user.create_activation_code()
         user.set_password(password)
         user.save(using=self._db)
@@ -36,12 +38,14 @@ class UserManager(BaseUserManager):
 class MyUser(AbstractUser):
     username = None
     email = models.EmailField('email address', unique=True)
-    password = models.CharField(max_length=100)
-    objects = UserManager()
+    # password = models.CharField(max_length=100)
     is_active = models.BooleanField(default=False)
     activation_code = models.CharField(max_length=40, blank=True)
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
+
+    objects = UserManager()
 
     def __str__(self):
         return self.email

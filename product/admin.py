@@ -9,7 +9,7 @@ admin.site.register(Rating)
 
 class ImageInAdmin(admin.TabularInline):
     model = Image
-    fields = 'image'
+    fields = ('image',)
     max_num = 5
 
 
