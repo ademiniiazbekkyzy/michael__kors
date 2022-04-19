@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     # my apps
     'product',
     'account',
+    'order',
+    'reviews',
     
     # modules
     'rest_framework',
@@ -92,17 +94,6 @@ DATABASES = {
         default=config('DATABASE_URL')
     )
 }
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'michaelkors_db',
-#         'USER': 'ademi',
-#         'PASSWORD': '1',
-#         'HOST': 'localhost',
-#         'PORT': 5432
-#     }
-# }
 
 
 # Password validation
