@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 from product.filters import ProductFilter
 from product.models import Product, Rating, Category
-from product.serializers import RatingSerializers
+from product.serializers import RatingSerializers, CategorySerializers, ProductSerializers
 
 
 class LargeResultsSetPagination(PageNumberPagination):
@@ -18,7 +18,7 @@ class LargeResultsSetPagination(PageNumberPagination):
 
 class ProductViewSet(ModelViewSet):
     queryset = Product.objects.all()
-    serializer_class = Product.serializers
+    serializer_class = ProductSerializers
     pagination_class = LargeResultsSetPagination
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_class = ProductFilter
@@ -53,12 +53,12 @@ class ProductViewSet(ModelViewSet):
 
 class CategoryListCreateView(ListCreateAPIView):
     queryset = Category.objects.all()
-    serializer_class = Category.serializers
+    serializer_class = CategorySerializers
     permission_class = [IsAuthenticated]
 
 
 class CategoryRetrieveDeleteUpdateView(RetrieveUpdateDestroyAPIView):
     lookup_field = 'slug'
     queryset = Category.objects.all()
-    serializer_class = Category.serializers
+    serializer_class = CategorySerializers
     permission_class = [IsAuthenticated]
