@@ -10,8 +10,7 @@ class CategorySerializers(serializers.ModelSerializer):
         fields = '__all__'
 
 
-
-class Ratingserializers(serializers.ModelSerializer):
+class RatingSerializers(serializers.ModelSerializer):
     class Meta:
         model = Rating
         fields ='rating'

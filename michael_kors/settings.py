@@ -44,7 +44,7 @@ INSTALLED_APPS = [
 
     # my apps
     'product',
-    'account'
+    'account',
     
     # modules
     'rest_framework',
@@ -92,6 +92,17 @@ DATABASES = {
         default=config('DATABASE_URL')
     )
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'michaelkors_db',
+#         'USER': 'ademi',
+#         'PASSWORD': '1',
+#         'HOST': 'localhost',
+#         'PORT': 5432
+#     }
+# }
 
 
 # Password validation
@@ -144,7 +155,8 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication'
     ],
 }
-AUTH_USER_MODEL = 'account.CustomUser'
+AUTH_USER_MODEL = 'account.MyUser'
+
 
 EMAIL_BACKEND = config('EMAIL_BACKEND')
 EMAIL_HOST = config('EMAIL_HOST')

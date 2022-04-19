@@ -1,19 +1,15 @@
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.decorators import action
 from rest_framework.filters import SearchFilter, OrderingFilter
-
 from rest_framework.generics import *
 from rest_framework.mixins import *
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
-
-
-from rest_framework.viewsets import ModelViewSet, GenericViewSet, ViewSet
-
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.viewsets import ModelViewSet
 from product.filters import ProductFilter
 from product.models import Product, Rating, Category
-from product.permissions import IsAdmin, IsAuthor
-from product.serializers import ProductSerializer, RatingSerializers, CategorySerializers
+from product.serializers import RatingSerializers
+
+
 class LargeResultsSetPagination(PageNumberPagination):
     page_size = 3
     page_size_query_param = 'page_size'
@@ -28,7 +24,6 @@ class ProductViewSet(ModelViewSet):
     filterset_class = ProductFilter
     ordering_fields = ['id', 'price']
     search_fields = ['name', 'description']
-
 
     def get_permissions(self):
         print(self.action)
@@ -56,16 +51,13 @@ class ProductViewSet(ModelViewSet):
         return Response(request.data, status=status.HTTP_201_CREATED)
 
 
-
-
 class CategoryListCreateView(ListCreateAPIView):
     queryset = Category.objects.all()
-    serializer_class =Category.serializers
+    serializer_class = Category.serializers
     permission_class = [IsAuthenticated]
 
 
-
-class CategoryRetriveDeleteUpdateView(RetrieveUpdateDestroyAPIView):
+class CategoryRetrieveDeleteUpdateView(RetrieveUpdateDestroyAPIView):
     lookup_field = 'slug'
     queryset = Category.objects.all()
     serializer_class = Category.serializers
