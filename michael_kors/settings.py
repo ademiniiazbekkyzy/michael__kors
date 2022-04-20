@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'account',
     'order',
     'reviews',
+    'likes'
     
     # modules
     'rest_framework',
