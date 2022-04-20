@@ -3,10 +3,11 @@ from rest_framework.routers import DefaultRouter
 from product.views import *
 
 router = DefaultRouter()
-router.register = ('', ProductViewSet)
+router.register = ('product', ProductViewSet)
 
 urlpatterns = [
-    path('category/', CategoryListCreateView.as_view()),
-    path('category/<str:slug>', CategoryRetrieveDeleteUpdateView.as_view()),
+    path('v1/api/categories/', CategoryListCreateView.as_view()),
+    path('categories/<str:slug>/', CategoryRetrieveDeleteUpdateView.as_view()),
     path('', include(router.urls))
 ]
+

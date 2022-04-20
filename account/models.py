@@ -1,3 +1,5 @@
+import hashlib
+
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.db import models
@@ -38,7 +40,6 @@ class UserManager(BaseUserManager):
 class MyUser(AbstractUser):
     username = None
     email = models.EmailField('email address', unique=True)
-    # password = models.CharField(max_length=100)
     is_active = models.BooleanField(default=False)
     activation_code = models.CharField(max_length=40, blank=True)
 
@@ -51,6 +52,10 @@ class MyUser(AbstractUser):
         return self.email
 
     def create_activation_code(self):
-        import uuid
-        code = str(uuid.uuid4())
-        self.activation_code = code
+        string = self.email + str(self.id)
+        encode_string = string.encode()
+        md5_object = hashlib.md5(encode_string)
+        activation_code = md5_object.hexdigest()
+        self.activation_code = activation_code
+
+

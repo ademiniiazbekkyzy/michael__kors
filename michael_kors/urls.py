@@ -17,6 +17,9 @@ from django.contrib import admin
 from django.urls import path, include
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+from django.conf.urls.static import static
+
+from michael_kors import settings
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -30,10 +33,11 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('swagger/', schema_view.with_ui('swagger')),
-    path('api/v1/account/', include('account.urls')),
-    path('api/v1/product/', include('product.urls')),
-    path('api/v1/order/', include('order.urls')),
+    path('v1/api/account/', include('account.urls')),
+    path('v1/api/product/', include('product.urls')),
+    path('v1/api/order/', include('order.urls')),
     # path('api/v1/reviews/', include('reviews.urls')),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 
 
