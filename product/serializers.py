@@ -13,13 +13,13 @@ class RatingSerializers(serializers.ModelSerializer):
 
     class Meta:
         model = Rating
-        fields ='rating'
+        fields = ['rating', "owner"]
 
 
 class ProductImageSerializers(serializers.ModelSerializer):
     class Meta:
         model = Image
-    fields = '__all__'
+        fields = '__all__'
 
 
 class ProductSerializers(serializers.ModelSerializer):
@@ -28,7 +28,8 @@ class ProductSerializers(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ('id', 'name', 'category', 'owner', 'description', 'images', 'price', 'rating')
+        fields = ['owner', 'name', 'description', 'price', 'category', 'images']
+        read_only_fields = ["id"]
 
     def create(self, validated_data):
         request = self.context.get('request')
@@ -43,9 +44,9 @@ class ProductSerializers(serializers.ModelSerializer):
         rating_result = 0
         for i in instance.rating.all():
             rating_result += int(i.rating)
+
         if instance.rating.all().count() == 0:
             representation['rating'] = rating_result
         else:
             representation['rating'] = rating_result / instance.rating.all().count()
-        print(rating_result)
         return representation
