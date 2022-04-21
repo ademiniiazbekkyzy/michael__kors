@@ -1,4 +1,5 @@
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.decorators import action
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.generics import *
 from rest_framework.mixins import *
@@ -26,24 +27,24 @@ class ProductViewSet(ModelViewSet):
     search_fields = ['name', 'description']
 
     def get_permissions(self):
-        print(self.action)
         if self.action in ['list', 'retrieve']:
             permissions = []
         elif self.action == 'rating':
             permissions = [IsAuthenticated]
         else:
             permissions = [IsAuthenticated]
-        return [permissions() for permission in permissions]
+        return [permission() for permission in permissions]
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
+    @action(methods=['POST'], detail=True)
     def rating(self, request, pk):
         serializer = RatingSerializers(data=request.data)
         serializer.is_valid(raise_exception=True)
 
         try:
-            obj = Rating.objects.get(product=self.get.object(), owner=request.user)
+            obj = Rating.objects.get(product=self.get_object(), owner=request.user)
             obj.rating = request.data['rating']
         except Rating.DoesNotExist:
             obj = Rating(owner=request.user, product=self.get_object(), rating=request.data['rating'])

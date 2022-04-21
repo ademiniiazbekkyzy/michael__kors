@@ -18,8 +18,11 @@ from django.urls import path, include
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from django.conf.urls.static import static
+from rest_framework.routers import DefaultRouter
 
 from michael_kors import settings
+from product import views
+from product.views import ProductViewSet
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -30,14 +33,19 @@ schema_view = get_schema_view(
     public=True
 )
 
-urlpatterns = [
+
+api_urlpatterns = [
+    path('/account/', include('account.urls')),
+    path('/product/', include('product.urls')),
+    path('/order/', include('order.urls')),
+    # path('single/<int:pk>/', views.new_single, name="new_single"),
+]
+
+main_patterns = [
     path('admin/', admin.site.urls),
     path('swagger/', schema_view.with_ui('swagger')),
-    path('v1/api/account/', include('account.urls')),
-    path('v1/api/product/', include('product.urls')),
-    path('v1/api/order/', include('order.urls')),
-    # path('api/v1/reviews/', include('reviews.urls')),
+    path("api/v1", include(api_urlpatterns))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-
+urlpatterns = main_patterns + api_urlpatterns
 

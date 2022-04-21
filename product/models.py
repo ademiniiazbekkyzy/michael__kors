@@ -24,6 +24,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
     status = models.CharField(choices=CHOICES, max_length=20, blank=True)
+    # comment = models.CharField(blank=True, null=True, max_length=200)
     # likes = models.ManyToManyField(User, related_name='blogpost_like')
 
     def __str__(self):
@@ -36,9 +37,11 @@ class Image(models.Model):
 
 
 class Rating(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='ratings')
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ratings')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='rating')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='rating')
     rating = models.SmallIntegerField(validators=[
         MinValueValidator(1),
         MaxValueValidator(5)
     ])
+
+
