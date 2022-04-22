@@ -1,3 +1,4 @@
+from rest_framework import permissions
 from rest_framework.permissions import BasePermission, SAFE_METHODS
 
 
@@ -22,5 +23,25 @@ class IsAuthor(BasePermission):
         return request.user.is_authenticated and (request.user == obj.owner or request.user.is_staff)
 
 
-
-
+# class IsAuthorOrReadonly(permissions.BasePermission):
+#     """
+#     Create  permission to only allow owner of an object to edit and delete it.
+#     """
+#
+#     def has_object_permission(self, request, view, obj):
+#         if request.method in permissions.SAFE_METHODS:
+#             return True
+#
+#         return obj.author == request.user
+#
+#
+# class IsUserOrReadOnly(permissions.BasePermission):
+#     """
+#     Create permissions to only allow owner of an object to edit and delete it
+#     """
+#
+#     def has_object_permission(self, request, view, obj):
+#         if request.method in permissions.SAFE_METHODS:
+#             return True
+#         return obj.user == request.user
+#

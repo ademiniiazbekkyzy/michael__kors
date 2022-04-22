@@ -14,11 +14,11 @@ class UserManager(BaseUserManager):
         if not email:
             raise ValueError("The given email must be set")
         email = self.normalize_email(email=email)
-        user = self.model(email=email, password=password, **kwargs)
-        user.create_activation_code()
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
+        owner = self.model(email=email, password=password, **kwargs)
+        owner.create_activation_code()
+        owner.set_password(password)
+        owner.save(using=self._db)
+        return owner
 
     def create_user(self, email, password, **kwargs):
         kwargs.setdefault('is_staff', False)
