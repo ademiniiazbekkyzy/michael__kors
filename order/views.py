@@ -4,6 +4,7 @@ from rest_framework.decorators import api_view
 from order.forms import CreateOrderForm
 from order.models import Order
 
+
 @api_view(['GET'])
 def create_order(request):
     order_form = CreateOrderForm(request.POST)

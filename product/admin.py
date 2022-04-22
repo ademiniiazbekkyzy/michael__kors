@@ -5,7 +5,8 @@ from product.models import *
 admin.site.register(Category)
 admin.site.register(Image)
 admin.site.register(Rating)
-# admin.site.register(Reviews)
+# admin.site.register(Comment)
+# admin.site.register(Like)
 
 
 class ImageInAdmin(admin.TabularInline):
